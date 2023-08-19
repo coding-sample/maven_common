@@ -3,3 +3,4 @@
     1. packagesに保存
 1. webから以下を設定
     1. Actions -> General -> Read and write permissions
+    1. Actions -> General -> Accessible from repositories owned by the user 'zuruzirou'
