@@ -1,6 +1,8 @@
 # templateプロジェクトの使い方
 1. Webからリポジトリ新規作成。templateを指定
 1. pom.xmlのtemplate_commonを変更（3か所）
+    1. organizationの場合は、distributionManagementの宛先も修正
+        https://maven.pkg.github.com/zuruorg3/comm1
 1. settingsは引き継がれないので設定
     1. Actions -> General -> Read and write permissions
     1. Actions -> General -> Accessible from repositories owned by the user 'zuruzirou'
