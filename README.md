@@ -1,5 +1,5 @@
 # templateプロジェクトの使い方
-1. Webからリポジトリ新規作成
+1. Webからリポジトリ新規作成。templateを指定
 1. pom.xmlのtemplate_commonを変更（3か所）
 1. settingsは引き継がれないので設定
     1. Actions -> General -> Read and write permissions
