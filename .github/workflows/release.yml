@@ -23,7 +23,7 @@ jobs:
       - name: Build with Maven
         run: mvn --settings ./settings.xml clean install -Dbuild_time=${{ steps.setup.outputs.build_time }}
 
-      - name: Upload build artifact
+      - name: Upload src
         uses: actions/upload-artifact@v3
         with:
           name: src
@@ -150,3 +150,9 @@ jobs:
         run: mvn --settings ./settings.xml deploy -Dbuild_time=${{ steps.setup.outputs.build_time }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: jar
+          path: target/*.jar
