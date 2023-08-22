@@ -108,7 +108,7 @@ jobs:
         shell: bash
 
   deploy:
-    needs: test
+    needs: delete-package
     runs-on: ubuntu-latest
     permissions:
       contents: none
