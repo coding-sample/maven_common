@@ -98,6 +98,12 @@ jobs:
           id=$(echo "${res}" | jq '.[] | select(.name == "${{ steps.setup.outputs.build_time }}") | .id')
           echo "ID of package with name '${{ steps.setup.outputs.build_time }}' is: ${id}"
 
+          # IDが存在しない場合、削除をスキップ
+          if [ -z "$id" ]; then
+            echo "No ID found. Skipping deletion."
+            exit 0
+          fi
+
           # 削除
           curl -L \
             -X DELETE \
