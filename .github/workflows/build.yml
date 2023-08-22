@@ -44,11 +44,37 @@ jobs:
           name: src
           path: .
 
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: none
+      packages: none
+
+    steps:
+      
+      # Set Up前にcheckout必要
+      - name: Download checkout folder
+        uses: actions/download-artifact@v3
+        with:
+          name: src
+      
+      - name: Set Up
+        id: setup
+        uses: ./.github/workflows
+        with:
+          release_build: false
+
+      - name: Test
+        run: mvn --settings ./settings.xml test -Dbuild_time=${{ steps.setup.outputs.build_time }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: none
       packages: write
 
     steps:
