@@ -37,7 +37,7 @@ jobs:
       packages: none
 
     steps:
-      # Set Up前にcheckout必要
+      # Set Up前にsrc必要
       - name: Download checkout folder
         uses: actions/download-artifact@v3
         with:
@@ -72,7 +72,7 @@ jobs:
           echo "Access Token: ghs_"
           echo "Access Token: ${TOKEN:4}"
 
-      # Set Up前にcheckout必要
+      # Set Up前にsrc必要
       - name: Download checkout folder
         uses: actions/download-artifact@v3
         with:
@@ -84,7 +84,6 @@ jobs:
         uses: ./.github/workflows
 
       - name: パッケージ削除
-        id: comm1
         run: |
           # packageのバージョンIDを取得
           res=$(curl -L \
@@ -131,9 +130,11 @@ jobs:
       packages: write
 
     steps:
-      
-      # Set Up前にcheckout必要
-      - uses: actions/checkout@v3
+      # Set Up前にsrc必要
+      - name: Download checkout folder
+        uses: actions/download-artifact@v3
+        with:
+          name: src
       
       - name: Set Up
         id: setup
