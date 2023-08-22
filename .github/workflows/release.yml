@@ -83,6 +83,11 @@ jobs:
         id: setup
         uses: ./.github/workflows
 
+      - name: debug
+        run: |
+          echo "${{ github.repository }}"
+          echo "----------"
+
       - name: パッケージ削除
         run: |
           # packageのバージョンIDを取得
