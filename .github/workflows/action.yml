@@ -1,9 +1,3 @@
-
-on: 
-  push:
-    branches-ignore:
-      - xx
-
 name: 'Set Up'
 description: 'Set up the build environment'
 inputs:
