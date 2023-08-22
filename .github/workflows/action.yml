@@ -7,9 +7,9 @@ inputs:
         default: true
 
 outputs:
-    build_number:
+    build_time:
         description: 'The build number'
-        value: ${{ steps.set-vers.outputs.build_number }}
+        value: ${{ steps.set-vers.outputs.build_time }}
 
 runs:
     using: "composite"
