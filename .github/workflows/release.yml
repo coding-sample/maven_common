@@ -1,0 +1,52 @@
+name: ubuntu-latest
+
+on: 
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # - name: Generate token
+      #   id: generate_token
+      #   uses: tibdex/github-app-token@v1.8
+      #   with:
+      #     app_id: ${{ secrets.APP_ID }}
+      #     private_key: ${{ secrets.PRIVATE_KEY }}
+
+      # - name: Output token
+      #   env:
+      #     TOKEN: ${{ steps.generate_token.outputs.token }}
+      #   run: |
+      #     echo "Access Token: ${TOKEN:4}"
+      
+      # Set Up前にcheckout必要
+      - uses: actions/checkout@v3
+
+      - name: Set Up
+        id: setup
+        uses: ./.github/workflows
+
+      - name: Build with Maven
+        run: mvn --settings ./settings.xml clean install -Dbuild_time=${{ steps.setup.outputs.build_time }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      
+      # Set Up前にcheckout必要
+      - uses: actions/checkout@v3
+      
+      - name: Set Up
+        id: setup
+        uses: ./.github/workflows
+
+      - name: Deploy to GitHub Packages
+        run: mvn --settings ./settings.xml deploy -Dbuild_time=${{ steps.setup.outputs.build_time }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
