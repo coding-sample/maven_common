@@ -1,3 +1,4 @@
+# このファイル内ではsecretsは扱えない
 name: 'Set Up'
 description: 'Set up the build environment'
 inputs:
