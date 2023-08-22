@@ -67,8 +67,6 @@ jobs:
 
       - name: Test
         run: mvn --settings ./settings.xml test -Dbuild_time=${{ steps.setup.outputs.build_time }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
     needs: test
