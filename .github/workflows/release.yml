@@ -73,9 +73,14 @@ jobs:
           echo "Access Token: ghs_"
           echo "Access Token: ${TOKEN:4}"
 
-      - name: comm1のパッケージバージョン情報を取得
+      - name: パッケージ削除
         id: comm1
         run: |
+          echo ${{ steps.setup.outputs.build_time }}
+          echo '${{ steps.setup.outputs.build_time }}'
+          echo "${{ steps.setup.outputs.build_time }}"
+          echo "----"
+
           # packageのバージョンIDを取得
           res=$(curl -L \
             -H "Accept: application/vnd.github+json" \
