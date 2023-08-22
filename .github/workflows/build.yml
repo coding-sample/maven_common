@@ -41,13 +41,14 @@ jobs:
 
     steps:
       
+      # Set Up前にcheckout必要
+      - uses: actions/checkout@v3
+      
       - name: Set Up
         id: setup
         uses: ./.github/workflows
         with:
           release_build: false
-
-      - uses: actions/checkout@v3
 
       - name: Deploy to GitHub Packages
         run: mvn --settings ./settings.xml deploy -Dbuild_time=${{ steps.setup.outputs.build_time }}
