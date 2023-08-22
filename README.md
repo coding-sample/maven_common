@@ -16,3 +16,7 @@
     1. Actions -> General -> Read and write permissions
     1. Actions -> General -> Accessible from repositories owned by the user 'zuruzirou'
 1. settingsからtemplate projectに指定
+
+# using: "composite"について
+複合アクションを作成する  
+https://docs.github.com/ja/actions/creating-actions/creating-a-composite-action
