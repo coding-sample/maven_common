@@ -13,19 +13,6 @@ jobs:
       packages: none
 
     steps:
-      # - name: Generate token
-      #   id: generate_token
-      #   uses: tibdex/github-app-token@v1.8
-      #   with:
-      #     app_id: ${{ secrets.APP_ID }}
-      #     private_key: ${{ secrets.PRIVATE_KEY }}
-
-      # - name: Output token
-      #   env:
-      #     TOKEN: ${{ steps.generate_token.outputs.token }}
-      #   run: |
-      #     echo "Access Token: ${TOKEN:4}"
-      
       # Set Up前にcheckout必要
       - uses: actions/checkout@v3
 
@@ -52,7 +39,6 @@ jobs:
       packages: none
 
     steps:
-      
       # Set Up前にcheckout必要
       - name: Download checkout folder
         uses: actions/download-artifact@v3
@@ -68,6 +54,62 @@ jobs:
       - name: Test
         run: mvn --settings ./settings.xml test -Dbuild_time=${{ steps.setup.outputs.build_time }}
 
+  delete-package:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: none
+      packages: none
+
+    steps:
+      - name: Token発行（Github App）
+        id: generate_token
+        uses: tibdex/github-app-token@v1.8
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.PRIVATE_KEY }}
+
+      - name: Token確認
+        env:
+          TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+          echo "Access Token: ghs_"
+          echo "Access Token: ${TOKEN:4}"
+
+      - name: comm1のパッケージバージョン情報を取得
+        id: comm1
+        run: |
+          # packageのバージョンIDを取得
+          res=$(curl -L \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ steps.generate_token.outputs.token }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/orgs/template-maven/packages/maven/com.example.template_common/versions)
+          echo "before ---"
+          echo "${res}"
+          echo "----------"
+          id=$(echo "${res}" | jq '.[] | select(.name == "${{ steps.setup.outputs.build_time }}") | .id')
+          echo "ID of package with name '${{ steps.setup.outputs.build_time }}' is: ${id}"
+
+          # 削除
+          curl -L \
+            -X DELETE \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/orgs/template-maven/packages/maven/com.example.template_common/versions/${id}
+
+          # 削除確認
+          res=$(curl -L \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ steps.generate_token.outputs.token }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/orgs/template-maven/packages/maven/com.example.template_common/versions)
+          echo "after ---"
+          echo "${res}"
+
+        shell: bash
+
   deploy:
     needs: test
     runs-on: ubuntu-latest
@@ -76,7 +118,6 @@ jobs:
       packages: write
 
     steps:
-      
       # Set Up前にcheckout必要
       - name: Download checkout folder
         uses: actions/download-artifact@v3
