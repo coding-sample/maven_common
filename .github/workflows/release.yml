@@ -36,11 +36,39 @@ jobs:
       - name: Build with Maven
         run: mvn --settings ./settings.xml clean install -Dbuild_time=${{ steps.setup.outputs.build_time }}
 
-  deploy:
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: src
+          path: .
+
+  test:
     needs: build
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: none
+      packages: none
+
+    steps:
+      
+      # Set Up前にcheckout必要
+      - name: Download checkout folder
+        uses: actions/download-artifact@v3
+        with:
+          name: src
+      
+      - name: Set Up
+        id: setup
+        uses: ./.github/workflows
+
+      - name: Test
+        run: mvn --settings ./settings.xml test -Dbuild_time=${{ steps.setup.outputs.build_time }}
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: none
       packages: write
 
     steps:
