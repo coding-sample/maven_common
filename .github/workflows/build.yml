@@ -9,8 +9,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      packages: read
+      contents: none
+      packages: none
 
     steps:
       # - name: Generate token
