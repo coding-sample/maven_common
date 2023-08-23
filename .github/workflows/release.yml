@@ -108,11 +108,12 @@ jobs:
             echo "id=${id}" >> $GITHUB_OUTPUT
           else
             echo "Package not found, skipping deletion."
+            echo "id=skip" >> $GITHUB_OUTPUT
           fi
         shell: bash
 
       - name: パッケージ削除
-        if: ${{ steps.pkgcheck.outputs.id }} != ''
+        if: ${{ steps.pkgcheck.outputs.id }} != 'skip'
         run: |
             # 削除
             echo "Deleting package with ID ${{ steps.pkgcheck.outputs.id }}"
