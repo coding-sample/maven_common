@@ -101,9 +101,14 @@ jobs:
           echo "before ---"
           echo "${res}"
           echo "----------"
-          id=$(echo "${res}" | jq '.[] | select(.name == "${{ steps.setup.outputs.build_time }}") | .id')
-          echo "ID of package with name '${{ steps.setup.outputs.build_time }}' is: ${id}"
-          echo "id=${id}" >> $GITHUB_OUTPUT
+
+          if [[ "${res}" != *"Package not found."* ]]; then
+            id=$(echo "${res}" | jq '.[] | select(.name == "${{ steps.setup.outputs.build_time }}") | .id')
+            echo "ID of package with name '${{ steps.setup.outputs.build_time }}' is: ${id}"
+            echo "id=${id}" >> $GITHUB_OUTPUT
+          else
+            echo "Package not found, skipping deletion."
+          fi
         shell: bash
 
       - name: パッケージ削除
