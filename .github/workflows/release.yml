@@ -89,7 +89,8 @@ jobs:
           echo "${{ github.repository }}"
           echo "----------"
 
-      - name: パッケージ削除
+      - name: パッケージ削除チェック
+        id: pkgcheck
         run: |
           # packageのバージョンIDを取得
           res=$(curl -L \
@@ -102,32 +103,29 @@ jobs:
           echo "----------"
           id=$(echo "${res}" | jq '.[] | select(.name == "${{ steps.setup.outputs.build_time }}") | .id')
           echo "ID of package with name '${{ steps.setup.outputs.build_time }}' is: ${id}"
-
-          # IDが存在しない場合、削除をスキップ
-          if [ -z "${id}" ]; then
-            echo "No ID found. Skipping deletion."
-            exit 0
-          fi
-
-          # 削除
-          echo "Deleting package with ID ${id}"
-          curl -L \
-            -X DELETE \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ steps.generate_token.outputs.token }}" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/orgs/template-maven/packages/maven/releases.com.example.template_common/versions/${id}
-
-          # 削除確認
-          res=$(curl -L \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ steps.generate_token.outputs.token }}" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/orgs/template-maven/packages/maven/releases.com.example.template_common/versions)
-          echo "after ---"
-          echo "${res}"
-
+          echo "id=${id}" >> $GITHUB_OUTPUT
         shell: bash
+
+      - name: パッケージ削除
+        if: ${{ steps.pkgcheck.outputs.id }} != ''
+        run: |
+            # 削除
+            echo "Deleting package with ID ${{ steps.pkgcheck.outputs.id }}"
+            curl -L \
+              -X DELETE \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{ steps.generate_token.outputs.token }}" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              https://api.github.com/orgs/template-maven/packages/maven/releases.com.example.template_common/versions/${{ steps.pkgcheck.outputs.id }}
+
+            # 削除確認
+            res=$(curl -L \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{ steps.generate_token.outputs.token }}" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              https://api.github.com/orgs/template-maven/packages/maven/releases.com.example.template_common/versions)
+            echo "after ---"
+            echo "${res}"
 
   deploy:
     needs: delete-package
