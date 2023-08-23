@@ -133,31 +133,31 @@ jobs:
             echo "after ---"
             echo "${res}"
 
-  deploy:
-    needs: delete-package
-    runs-on: ubuntu-latest
-    permissions:
-      contents: none
-      packages: write
+  # deploy:
+  #   needs: delete-package
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: none
+  #     packages: write
 
-    steps:
-      # Set Up前にsrc必要
-      - name: Download checkout folder
-        uses: actions/download-artifact@v3
-        with:
-          name: src
+  #   steps:
+  #     # Set Up前にsrc必要
+  #     - name: Download checkout folder
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: src
       
-      - name: Set Up
-        id: setup
-        uses: ./.github/workflows
+  #     - name: Set Up
+  #       id: setup
+  #       uses: ./.github/workflows
 
-      - name: Deploy to GitHub Packages
-        run: mvn --settings ./settings.xml deploy -Dbuild_time=${{ steps.setup.outputs.build_time }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Deploy to GitHub Packages
+  #       run: mvn --settings ./settings.xml deploy -Dbuild_time=${{ steps.setup.outputs.build_time }}
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: jar
-          path: target/*.jar
+  #     - name: Upload build artifact
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: jar
+  #         path: target/*.jar
