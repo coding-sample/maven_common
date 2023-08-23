@@ -113,7 +113,7 @@ jobs:
         shell: bash
 
       - name: パッケージ削除
-        if: ${{ steps.pkgcheck.outputs.id }} != 'skip'
+        if: ${{ steps.pkgcheck.outputs.id }}!='skip'
         run: |
             # 削除
             echo "Deleting package with ID ${{ steps.pkgcheck.outputs.id }}"
