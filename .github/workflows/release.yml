@@ -102,8 +102,8 @@ jobs:
           echo "${res}"
           echo "----------"
 
-          if [[ "${res}" != *"ot found."* ]]; then
-            id=$(echo "${res}" | jq '.[] | select(.name == "${{ steps.setup.outputs.build_time }}") | .id')
+          id=$(echo "${res}" | jq '.[] | select(.name == "${{ steps.setup.outputs.build_time }}") | .id')
+          if [ -n "$id" ]; then
             echo "ID of package with name '${{ steps.setup.outputs.build_time }}' is: ${id}"
             echo "id=${id}" >> $GITHUB_OUTPUT
           else
