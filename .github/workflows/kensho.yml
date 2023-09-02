@@ -43,16 +43,16 @@ jobs:
         id: setup
         uses: ./.github/workflows
 
-      - name: token発行
+      - name: Github App token発行
         id: generate_token
         uses: tibdex/github-app-token@v1.8.2
         with:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.PRIVATE_KEY }}
 
-      - name: パッケージ削除
+      - name: artifact list
         run: |
-            # 削除
+            # 削除にはactions write permissionが必要だったので、諦めた
             curl -L \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ steps.generate_token.outputs.token }}" \
