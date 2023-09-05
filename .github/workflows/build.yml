@@ -107,4 +107,4 @@ jobs:
           package-name: 'releases.com.example.template_common'
           package-type: 'maven'
           min-versions-to-keep: 4
-          token: ${{ secrets.DEL0905 }}
+          token: ${{ steps.generate_token.outputs.token }}
