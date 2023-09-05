@@ -34,11 +34,11 @@ runs:
     id: set-pkg
     run: |
       if [ "${{ inputs.release_build }}" = "true" ]; then
-          pkg=""
+        pkg="releases"
       else
-      pkg="-SNAPSHOT"
+        pkg="snapshots"
       fi
-      echo "pkg=${pkg}" >> $GITHUB_OUTPUT
+      echo "pkg=${pkg}.com.example.template_common" >> $GITHUB_OUTPUT
     shell: bash
 
   - name: Set up JDK 17
