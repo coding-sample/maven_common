@@ -93,6 +93,12 @@ jobs:
       with:
         app_id: ${{ secrets.APP_ID }}
         private_key: ${{ secrets.PRIVATE_KEY }}
+    
+    - name: Set Up
+      id: setup
+      uses: ./.github/workflows
+      with:
+        release_build: false
 
     - name: Get package versions created within the last period
       id: pkgids
