@@ -131,7 +131,7 @@ jobs:
         ids=$(echo "${res}" | jq -r --arg DATE "$period_ago" '.[] | select(.updated_at <= $DATE) | .id | tostring' | paste -sd, -)
 
         if [ -n "$ids" ]; then
-          echo "IDs of packages created within the last period: ${ids}"
+          echo "IDs of packages updated within the last period: ${ids}"
           echo "ids=${ids}" >> $GITHUB_OUTPUT
         else
           echo "No packages found within the last period, skipping deletion."
@@ -141,7 +141,7 @@ jobs:
 
     - name: Delete package
       if: ${{ steps.pkgids.outputs.ids != 'skip' }}
-      uses: actions/delete-package-versions@v4.1.1
+      uses: actions/delete-package-versions@v4
       with: 
         package-name: ${{ steps.setup.outputs.pkg }}
         package-type: 'maven'

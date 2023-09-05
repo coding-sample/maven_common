@@ -27,7 +27,8 @@ runs:
       else
           suffix="-SNAPSHOT"
       fi
-      echo "build_time=$(date +%Y%m)-${GITHUB_REF#refs/heads/}${suffix}" | sed "s/\//-/g" >> $GITHUB_OUTPUT
+      # echo "build_time=$(date +%Y%m)-${GITHUB_REF#refs/heads/}${suffix}" | sed "s/\//-/g" >> $GITHUB_OUTPUT
+      echo "build_time=hoge1" | sed "s/\//-/g" >> $GITHUB_OUTPUT
     shell: bash
 
   - name: Set pkg
