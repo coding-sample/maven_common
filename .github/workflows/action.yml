@@ -13,7 +13,7 @@ outputs:
     value: ${{ steps.set-vers.outputs.build_time }}
   pkg:
     description: 'package name'
-    value: ${{ steps.set-vers.outputs.pkg }}
+    value: ${{ steps.set-pkg.outputs.pkg }}
 
 runs:
   using: "composite"
