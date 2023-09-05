@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - '.github/workflows/build.yml'
   workflow_dispatch:
 
 jobs:
@@ -179,8 +181,8 @@ jobs:
       id: pkgids
       run: |
         # Get the date of the period ago (e.g., 3 months ago)
-        period_ago=$(date -d '${{ vars.PACKAGE_RETENTION_PERIOD }} months ago' '+%Y-%m-%dT%H:%M:%SZ')
-        # period_ago=$(date -d '3 days ago' '+%Y-%m-%dT%H:%M:%SZ')
+        # period_ago=$(date -d '${{ vars.PACKAGE_RETENTION_PERIOD }} months ago' '+%Y-%m-%dT%H:%M:%SZ')
+        period_ago=$(date -d '3 days ago' '+%Y-%m-%dT%H:%M:%SZ')
         # period_ago=$(date -d '180 seconds ago' '+%Y-%m-%dT%H:%M:%SZ')
 
         # Print the package name and period_ago for debugging
