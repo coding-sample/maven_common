@@ -155,7 +155,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: none
-      packages: write
+      packages: none
 
     steps:
     - name: Token発行（Github App）
@@ -204,4 +204,3 @@ jobs:
         package-type: 'maven'
         package-version-ids: ${{ steps.pkgcheck.outputs.id }}
         token: ${{ steps.generate_token.outputs.token }}
-
