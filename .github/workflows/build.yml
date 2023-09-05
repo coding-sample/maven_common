@@ -13,23 +13,23 @@ jobs:
       packages: none
 
     steps:
-      # Set Up前にcheckout必要
-      - uses: actions/checkout@v4
+    # Set Up前にcheckout必要
+    - uses: actions/checkout@v4
 
-      - name: Set Up
-        id: setup
-        uses: ./.github/workflows
-        with:
-          release_build: false
+    - name: Set Up
+      id: setup
+      uses: ./.github/workflows
+      with:
+        release_build: false
 
-      - name: Build with Maven
-        run: mvn --settings ./settings.xml clean install -Dbuild_time=${{ steps.setup.outputs.build_time }}
+    - name: Build with Maven
+      run: mvn --settings ./settings.xml clean install -Dbuild_time=${{ steps.setup.outputs.build_time }}
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: src
-          path: .
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: src
+        path: .
 
   test:
     needs: build
@@ -39,20 +39,20 @@ jobs:
       packages: none
 
     steps:
-      # Set Up前にcheckout必要
-      - name: Download checkout folder
-        uses: actions/download-artifact@v3
-        with:
-          name: src
-      
-      - name: Set Up
-        id: setup
-        uses: ./.github/workflows
-        with:
-          release_build: false
+    # Set Up前にcheckout必要
+    - name: Download checkout folder
+      uses: actions/download-artifact@v3
+      with:
+        name: src
+    
+    - name: Set Up
+      id: setup
+      uses: ./.github/workflows
+      with:
+        release_build: false
 
-      - name: Test
-        run: mvn --settings ./settings.xml test -Dbuild_time=${{ steps.setup.outputs.build_time }}
+    - name: Test
+      run: mvn --settings ./settings.xml test -Dbuild_time=${{ steps.setup.outputs.build_time }}
 
   deploy:
     needs: test
@@ -62,22 +62,22 @@ jobs:
       packages: write
 
     steps:
-      # Set Up前にcheckout必要
-      - name: Download checkout folder
-        uses: actions/download-artifact@v3
-        with:
-          name: src
-      
-      - name: Set Up
-        id: setup
-        uses: ./.github/workflows
-        with:
-          release_build: false
+    # Set Up前にcheckout必要
+    - name: Download checkout folder
+      uses: actions/download-artifact@v3
+      with:
+        name: src
+    
+    - name: Set Up
+      id: setup
+      uses: ./.github/workflows
+      with:
+        release_build: false
 
-      - name: Deploy to GitHub Packages
-        run: mvn --settings ./settings.xml deploy -Dbuild_time=${{ steps.setup.outputs.build_time }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Deploy to GitHub Packages
+      run: mvn --settings ./settings.xml deploy -Dbuild_time=${{ steps.setup.outputs.build_time }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   delete-old-package:
     needs: deploy
@@ -87,17 +87,17 @@ jobs:
       packages: write
 
     steps:
-      - name: Token発行（Github App）
-        id: generate_token
-        uses: tibdex/github-app-token@v1.8
-        with:
-          app_id: ${{ secrets.APP_ID }}
-          private_key: ${{ secrets.PRIVATE_KEY }}
+    - name: Token発行（Github App）
+      id: generate_token
+      uses: tibdex/github-app-token@v1.8
+      with:
+        app_id: ${{ secrets.APP_ID }}
+        private_key: ${{ secrets.PRIVATE_KEY }}
 
-      - name: Delete old packages
-        uses: actions/delete-package-versions@v4
-        with: 
-          package-name: 'snapshots.com.example.template_common'
-          package-type: 'maven'
-          min-versions-to-keep: 3
-          token: ${{ steps.generate_token.outputs.token }}
+    - name: Delete old packages
+      uses: actions/delete-package-versions@v4
+      with: 
+        package-name: 'snapshots.com.example.template_common'
+        package-type: 'maven'
+        min-versions-to-keep: 3
+        token: ${{ steps.generate_token.outputs.token }}
