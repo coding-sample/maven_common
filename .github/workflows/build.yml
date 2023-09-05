@@ -93,6 +93,12 @@ jobs:
       with:
         app_id: ${{ secrets.APP_ID }}
         private_key: ${{ secrets.PRIVATE_KEY }}
+        
+    # Set Up前にcheckout必要
+    - name: Download checkout folder
+      uses: actions/download-artifact@v3
+      with:
+        name: src
     
     - name: Set Up
       id: setup
