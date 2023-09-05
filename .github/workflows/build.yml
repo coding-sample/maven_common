@@ -80,7 +80,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   delete-old-package:
-    # 直近３件のみ残す
     needs: deploy
     runs-on: ubuntu-latest
     permissions:
@@ -95,16 +94,10 @@ jobs:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.PRIVATE_KEY }}
 
-      - name: Token確認
-        env:
-          TOKEN: ${{ steps.generate_token.outputs.token }}
-        run: |
-          echo "Access Token: ghs_"
-          echo "Access Token: ${TOKEN:4}"
-
-      - uses: actions/delete-package-versions@v4
+      - name: Delete old packages
+        uses: actions/delete-package-versions@v4
         with: 
-          package-name: 'releases.com.example.template_common'
+          package-name: 'snapshots.com.example.template_common'
           package-type: 'maven'
           min-versions-to-keep: 3
           token: ${{ steps.generate_token.outputs.token }}
