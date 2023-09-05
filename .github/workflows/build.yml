@@ -124,7 +124,7 @@ jobs:
         echo "----------"
 
         # Extract IDs of packages created within the last period
-        ids=$(echo "${res}" | jq -r --arg DATE "$period_ago" '.[] | select(.updated_at > $DATE) | .id | tostring' | paste -sd, -)
+        ids=$(echo "${res}" | jq -r --arg DATE "$period_ago" '.[] | select(.updated_at <= $DATE) | .id | tostring' | paste -sd, -)
 
         if [ -n "$ids" ]; then
           echo "IDs of packages created within the last period: ${ids}"
