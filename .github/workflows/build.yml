@@ -112,6 +112,9 @@ jobs:
         # Get the date of the period ago (e.g., 3 months ago)
         period_ago=$(date -d '${{ vars.PACKAGE_RETENTION_PERIOD }} months ago' '+%Y-%m-%dT%H:%M:%SZ')
 
+        # Print the package name and period_ago for debugging
+        echo "Package: ${{ steps.setup.outputs.pkg }}, Period Ago: $period_ago"
+        
         # Fetch package versions
         res=$(curl -L \
           -H "Accept: application/vnd.github+json" \
@@ -143,5 +146,3 @@ jobs:
         package-type: 'maven'
         package-version-ids: ${{ steps.pkgids.outputs.ids }}
         token: ${{ steps.generate_token.outputs.token }}
-        # token: ${{ secrets.DEL0905 }}
-        
