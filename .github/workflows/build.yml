@@ -106,6 +106,5 @@ jobs:
         with: 
           package-name: 'releases.com.example.template_common'
           package-type: 'maven'
-          min-versions-to-keep: 3
-          delete-only-pre-release-versions: "true"
-          token: ${{ steps.generate_token.outputs.token }}
+          min-versions-to-keep: 4
+          token: ${{ secrets.DEL0905 }}
