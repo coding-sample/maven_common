@@ -111,7 +111,8 @@ jobs:
       run: |
         # Get the date of the period ago (e.g., 3 months ago)
         # period_ago=$(date -d '${{ vars.PACKAGE_RETENTION_PERIOD }} months ago' '+%Y-%m-%dT%H:%M:%SZ')
-        period_ago=$(date -d '3 days ago' '+%Y-%m-%dT%H:%M:%SZ')
+        # period_ago=$(date -d '3 days ago' '+%Y-%m-%dT%H:%M:%SZ')
+        period_ago=$(date -d '60 seconds ago' '+%Y-%m-%dT%H:%M:%SZ')
 
         # Print the package name and period_ago for debugging
         echo "Package: ${{ steps.setup.outputs.pkg }}, Period Ago: $period_ago"
