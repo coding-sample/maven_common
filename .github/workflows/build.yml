@@ -128,10 +128,10 @@ jobs:
 
         if [ -n "$ids" ]; then
           echo "IDs of packages created within the last period: ${ids}"
-          echo "ids=${ids}" >> $GITHUB_ENV
+          echo "ids=${ids}" >> $GITHUB_OUTPUT
         else
           echo "No packages found within the last period, skipping deletion."
-          echo "ids=skip" >> $GITHUB_ENV
+          echo "ids=skip" >> $GITHUB_OUTPUT
         fi
       shell: bash
 
