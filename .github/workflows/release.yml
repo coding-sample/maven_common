@@ -165,42 +165,55 @@ jobs:
         app_id: ${{ secrets.APP_ID }}
         private_key: ${{ secrets.PRIVATE_KEY }}
 
-    - name: 三か月以内に登録されたパッケージID取得
-      id: pkgcheck
+    # Set Up前にcheckout必要
+    - name: Download checkout folder
+      uses: actions/download-artifact@v3
+      with:
+        name: src
+    
+    - name: Set Up
+      id: setup
+      uses: ./.github/workflows
+
+    - name: Get package versions created within the last period
+      id: pkgids
       run: |
-        # packageのバージョンIDを取得
+        # Get the date of the period ago (e.g., 3 months ago)
+        period_ago=$(date -d '${{ vars.PACKAGE_RETENTION_PERIOD }} months ago' '+%Y-%m-%dT%H:%M:%SZ')
+        # period_ago=$(date -d '3 days ago' '+%Y-%m-%dT%H:%M:%SZ')
+        # period_ago=$(date -d '180 seconds ago' '+%Y-%m-%dT%H:%M:%SZ')
+
+        # Print the package name and period_ago for debugging
+        echo "Package: ${{ steps.setup.outputs.pkg }}, Period Ago: $period_ago"
+        
+        # Fetch package versions
         res=$(curl -L \
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ steps.generate_token.outputs.token }}" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
-          https://api.github.com/orgs/template-maven/packages/maven/releases.com.example.template_common/versions)
-        echo "before ---"
+          https://api.github.com/orgs/template-maven/packages/maven/${{ steps.setup.outputs.pkg }}/versions)
+        
+        echo "Packages ---"
         echo "${res}"
-        echo "----------"
+        echo "------------"
 
-        # 現在の日付を取得し、三か月前の日付を計算
-        three_months_ago=$(date -d '3 months ago' '+%Y-%m-%dT%H:%M:%SZ')
-
-        # 三か月以内のパッケージIDを取得
-        ids=$(echo "${res}" | jq --arg DATE "$three_months_ago" '.[] | select(.created_at > $DATE) | .id')
-
-        # IDsをカンマで区切る
-        ids=$(echo $ids | tr '\n' ',' | sed 's/,$//')
+        # Extract IDs of packages created within the last period
+        ids=$(echo "${res}" | jq -r --arg DATE "$period_ago" '.[] | select(.updated_at <= $DATE) | .id | tostring' | paste -sd, -)
 
         if [ -n "$ids" ]; then
-          echo "IDs of packages created within the last 3 months: ${ids}"
-          echo "ids=${ids}" >> $GITHUB_ENV
+          echo "IDs of packages updated within the last period: ${ids}"
+          echo "ids=${ids}" >> $GITHUB_OUTPUT
         else
-          echo "No packages found that were created within the last 3 months, skipping deletion."
-          echo "ids=skip" >> $GITHUB_ENV
+          echo "No packages found within the last period, skipping deletion."
+          echo "ids=skip" >> $GITHUB_OUTPUT
         fi
       shell: bash
 
     - name: Delete package
-      if: ${{ steps.pkgcheck.outputs.id != 'skip' }}
+      if: ${{ steps.pkgids.outputs.ids != 'skip' }}
       uses: actions/delete-package-versions@v4
       with: 
         package-name: ${{ steps.setup.outputs.pkg }}
         package-type: 'maven'
-        package-version-ids: ${{ steps.pkgcheck.outputs.id }}
+        package-version-ids: ${{ steps.pkgids.outputs.ids }}
         token: ${{ steps.generate_token.outputs.token }}
