@@ -145,5 +145,5 @@ jobs:
       with: 
         package-name: ${{ steps.setup.outputs.pkg }}
         package-type: 'maven'
-        package-version-ids: ${{ steps.pkgids.outputs.ids }}
+        package-version-ids: '${{ steps.pkgids.outputs.ids }}'
         token: ${{ steps.generate_token.outputs.token }}
