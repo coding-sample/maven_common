@@ -108,7 +108,7 @@ jobs:
             echo "id=skip" >> $GITHUB_OUTPUT
           fi
         else
-        echo "API response suggests package not found."
+          echo "API response suggests package not found."
           echo "id=skip" >> $GITHUB_OUTPUT
         fi
       shell: bash
