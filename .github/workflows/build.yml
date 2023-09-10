@@ -42,10 +42,7 @@ jobs:
 
     steps:
       # Set Up前にcheckout必要
-    - name: Download checkout folder
-      uses: actions/download-artifact@v3
-      with:
-        name: src
+    - uses: actions/checkout@v4
     
     - name: Set Up
       id: setup
@@ -65,10 +62,7 @@ jobs:
 
     steps:
       # Set Up前にcheckout必要
-    - name: Download checkout folder
-      uses: actions/download-artifact@v3
-      with:
-        name: src
+    - uses: actions/checkout@v4
     
     - name: Set Up
       id: setup
@@ -97,10 +91,7 @@ jobs:
         private_key: ${{ secrets.PRIVATE_KEY }}
 
       # Set Up前にcheckout必要
-    - name: Download checkout folder
-      uses: actions/download-artifact@v3
-      with:
-        name: src
+    - uses: actions/checkout@v4
     
     - name: Set Up
       id: setup
