@@ -1,4 +1,4 @@
-package com.example.template_common;
+package com.example.maven_common;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

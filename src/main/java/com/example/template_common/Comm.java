@@ -1,4 +1,4 @@
-package com.example.template_common;
+package com.example.maven_common;
 
 public class Comm {
     public String getComm() {
