@@ -1,3 +1,10 @@
+# 設定変更箇所
+## Workflow permissions
+Read and write permissions
+
+## Access
+Accessible from repositories in the 'coding-sample' organization
+
 # templateプロジェクトの使い方
 1. Webからリポジトリ新規作成。templateを指定
 1. pom.xmlのmaven_commonを変更（3か所）
