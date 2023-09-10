@@ -36,7 +36,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions:
-      contents: none
+      contents: read
       packages: none
 
     steps:
@@ -54,7 +54,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     permissions:
-      contents: none
+      contents: read
       packages: none
 
     steps:
@@ -121,7 +121,7 @@ jobs:
     needs: delete-same-package
     runs-on: ubuntu-latest
     permissions:
-      contents: none
+      contents: read
       packages: write
 
     steps:
@@ -147,7 +147,7 @@ jobs:
     needs: deploy
     runs-on: ubuntu-latest
     permissions:
-      contents: none
+      contents: read
       packages: none
 
     steps:
