@@ -37,7 +37,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions:
-      contents: none
+      contents: read
       packages: none
 
     steps:
@@ -57,7 +57,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     permissions:
-      contents: none
+      contents: read
       packages: write
 
     steps:
@@ -79,7 +79,7 @@ jobs:
     needs: deploy
     runs-on: ubuntu-latest
     permissions:
-      contents: none
+      contents: read
       packages: none
 
     steps:
@@ -89,6 +89,13 @@ jobs:
       with:
         app_id: ${{ secrets.APP_ID }}
         private_key: ${{ secrets.PRIVATE_KEY }}
+
+    - name: Token確認
+      env:
+        TOKEN: ${{ steps.generate_token.outputs.token }}
+      run: |
+        echo "Access Token: ghs_"
+        echo "Access Token: ${TOKEN:4}"
 
       # Set Up前にcheckout必要
     - uses: actions/checkout@v4
