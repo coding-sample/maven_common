@@ -16,7 +16,7 @@ jobs:
       packages: none
 
     steps:
-    # Set Up前にcheckout必要
+      # Set Up前にcheckout必要
     - uses: actions/checkout@v3
 
     - name: Set Up
