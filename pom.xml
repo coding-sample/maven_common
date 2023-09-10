@@ -37,12 +37,12 @@
 		<repository>
 			<id>github</id>
 			<name>GitHub Packages</name>
-			<url>https://maven.pkg.github.com/template-maven/template_common/releases</url>
+			<url>https://maven.pkg.github.com/coding-sample/template_common/releases</url>
 		</repository>
 		<snapshotRepository>
 			<id>github</id>
 			<name>GitHub Packages</name>
-			<url>https://maven.pkg.github.com/template-maven/template_common/snapshots</url>
+			<url>https://maven.pkg.github.com/coding-sample/template_common/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
 
