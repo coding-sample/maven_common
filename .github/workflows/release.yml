@@ -98,10 +98,7 @@ jobs:
         echo "${res}"
         echo "----------"
 
-        # Check if the "name" attribute exists in the JSON response
-        has_name=$(echo "${res}" | jq 'map(select(has("name"))) | length')
-
-        if [ "$has_name" -gt 0 ]; then
+        if [[ "${res}" != *"message"* ]]; then
           id=$(echo "${res}" | jq '.[] | select(.name == "${{ steps.setup.outputs.build_time }}") | .id')
           if [ -n "$id" ]; then
             echo "ID of package with name '${{ steps.setup.outputs.build_time }}' is: ${id}"
@@ -111,7 +108,7 @@ jobs:
             echo "id=skip" >> $GITHUB_OUTPUT
           fi
         else
-          echo "API response does not have the 'name' attribute."
+          echo "API response suggests package not found."
           echo "id=skip" >> $GITHUB_OUTPUT
         fi
       shell: bash
