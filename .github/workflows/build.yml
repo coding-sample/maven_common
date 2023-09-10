@@ -15,7 +15,7 @@ jobs:
       packages: none
 
     steps:
-    # Set Up前にcheckout必要
+      # Set Up前にcheckout必要
     - uses: actions/checkout@v4
 
     - name: Set Up
@@ -41,7 +41,7 @@ jobs:
       packages: none
 
     steps:
-    # Set Up前にcheckout必要
+      # Set Up前にcheckout必要
     - name: Download checkout folder
       uses: actions/download-artifact@v3
       with:
@@ -64,7 +64,7 @@ jobs:
       packages: write
 
     steps:
-    # Set Up前にcheckout必要
+      # Set Up前にcheckout必要
     - name: Download checkout folder
       uses: actions/download-artifact@v3
       with:
@@ -96,7 +96,7 @@ jobs:
         app_id: ${{ secrets.APP_ID }}
         private_key: ${{ secrets.PRIVATE_KEY }}
 
-    # Set Up前にcheckout必要
+      # Set Up前にcheckout必要
     - name: Download checkout folder
       uses: actions/download-artifact@v3
       with:
