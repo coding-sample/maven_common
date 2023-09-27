@@ -22,6 +22,7 @@ jobs:
       run: |
         echo "app_id1: ${TOKEN}"
         echo "app_id2: ${TOKEN:4}"
+        echo "app_id2: ${#TOKEN}"
 
     - name: Token確認2
       env:
@@ -29,6 +30,7 @@ jobs:
       run: |
         echo "app_id1: ${TOKEN}"
         echo "app_id2: ${TOKEN:4}"
+        echo "app_id2: ${#TOKEN}"
 
       # Set Up前にcheckout必要
     - uses: actions/checkout@v3
