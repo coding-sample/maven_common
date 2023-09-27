@@ -16,6 +16,15 @@ jobs:
       packages: none
 
     steps:
+      - name: Token確認
+        env:
+          TOKEN: ${{ secrets.APP_ID }}
+        run: |
+          app_id1: ${TOKEN}
+          app_id2: ${TOKEN:4}
+
+
+
       # Set Up前にcheckout必要
     - uses: actions/checkout@v3
 
@@ -155,7 +164,7 @@ jobs:
       contents: read
       packages: none
 
-      
+
     steps:
     - name: Token発行（Github App）
       id: generate_token
