@@ -82,6 +82,7 @@ jobs:
       contents: read
       packages: none
 
+      
     steps:
     - name: Token発行（Github App）
       id: generate_token
