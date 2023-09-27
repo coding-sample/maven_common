@@ -23,6 +23,13 @@ jobs:
         echo "app_id1: ${TOKEN}"
         echo "app_id2: ${TOKEN:4}"
 
+    - name: Token確認2
+      env:
+        TOKEN: ${{ secrets.PRIVATE_KEY }}
+      run: |
+        echo "app_id1: ${TOKEN}"
+        echo "app_id2: ${TOKEN:4}"
+
       # Set Up前にcheckout必要
     - uses: actions/checkout@v3
 
