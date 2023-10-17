@@ -68,8 +68,64 @@ jobs:
     - name: Test
       run: mvn --settings ./settings.xml test -Dbuild_time=${{ steps.setup.outputs.build_time }}
 
-  delete-same-package:
+# ...（既存の部分は省略）
+
+  register-dummy-package:
+    # workflowからは最後のパッケージを削除出来ないため、ダミーパッケージを登録する
     needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: Token発行（Github App）
+      id: generate_token
+      uses: tibdex/github-app-token@v1.8
+      with:
+        app_id: ${{ secrets.APP_ID }}
+        private_key: ${{ secrets.PRIVATE_KEY }}
+
+    # Set Up前にcheckout必要
+    - uses: actions/checkout@v4
+    
+    - name: Set Up
+      id: setup
+      uses: ./.github/workflows
+
+    - name: Check number of packages
+      id: checkpkg
+      run: |
+        res=$(curl -L \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ steps.generate_token.outputs.token }}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          https://api.github.com/orgs/coding-sample/packages/maven/${{ steps.setup.outputs.pkg }}/versions)
+        
+        count=$(echo "${res}" | jq length)
+
+        echo "Package count: ${count}"
+
+        if [ "$count" -eq 0 ]; then
+            echo "register_dummy=true" >> $GITHUB_OUTPUT
+        else
+            echo "register_dummy=false" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
+
+    - name: Register dummy package
+      if: ${{ steps.checkpkg.outputs.register_dummy == 'true' }}
+      run: |
+        # ダミーパッケージの登録処理（"DUMMY"をbuild_timeとして使用して登録します）
+        mvn --settings ./settings.xml deploy -Dbuild_time=DUMMY
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ...（既存の部分は省略）
+
+
+  delete-same-package:
+    needs: register-dummy-package
     runs-on: ubuntu-latest
     permissions:
       contents: read
