@@ -116,7 +116,7 @@ jobs:
     - name: Register dummy package
       if: ${{ steps.checkpkg.outputs.register_dummy == 'true' }}
       run: |
-        # ダミーパッケージの登録処理（"DUMMY"をbuild_timeとして使用して登録します）
+        # ダミーパッケージ登録
         mvn --settings ./settings.xml deploy -Dbuild_time=DUMMY
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
