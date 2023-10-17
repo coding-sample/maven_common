@@ -71,7 +71,7 @@ jobs:
 # ...（既存の部分は省略）
 
   register-dummy-package:
-    # workflowからは最後のパッケージを削除出来ないため、ダミーパッケージを登録する
+    # workflowからは最後のパッケージを削除出来ないため、初回のみダミーパッケージを登録する
     needs: test
     runs-on: ubuntu-latest
     permissions:
