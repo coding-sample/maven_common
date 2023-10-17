@@ -102,6 +102,10 @@ jobs:
           -H "X-GitHub-Api-Version: 2022-11-28" \
           https://api.github.com/orgs/coding-sample/packages/maven/${{ steps.setup.outputs.pkg }}/versions)
         
+        echo "Packages ---"
+        echo $res
+        echo "------------"
+        
         if [[ "${res}" != *"message"* ]]; then
           # レスポンスが配列の場合（エラーメッセージがない場合）
           count=$(echo "${res}" | jq length)
