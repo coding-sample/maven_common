@@ -11,6 +11,16 @@ on:
   workflow_dispatch:
 
 jobs:
+  - name: Trigger maven_logic build
+    if: success()  # Only run this step if the build was successful
+    run: |
+      curl -X POST \
+          -H "Authorization: token ${{ secrets.PKG_READ_ETERNAL }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/coding-sample/maven_logic/dispatches \
+          -d '{"event_type": "maven_common_build_success", "client_payload": {"tag": "${{ github.ref_name }}"} }'
+
+
   check_master_branch:
     runs-on: ubuntu-latest
     permissions:
@@ -32,7 +42,7 @@ jobs:
         
         # Check if the tagged commit is part of the master branch
         if ! git branch --contains "$TAG_COMMIT" | grep -q '^* master$'; then
-          echo "Tag is not on the master branch. Exiting..."
+          echo "masterブランチ以外のコミットへのタグではビルドされません"
           exit 1
         fi
 
