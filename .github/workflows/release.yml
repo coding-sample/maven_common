@@ -11,6 +11,23 @@ on:
   workflow_dispatch:
 
 jobs:
+  check_master_branch:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Ensure the tag is on the master branch
+      run: |
+        TAG_COMMIT=$(git rev-list -n 1 ${{ github.ref }})
+        MASTER_COMMIT=$(git rev-parse master)
+
+        echo "Tag commit: $TAG_COMMIT"
+        echo "Master commit: $MASTER_COMMIT"
+        
+        if [[ "$TAG_COMMIT" != "$MASTER_COMMIT" ]]; then
+          echo "Tag is not on the latest commit of the master branch. Exiting..."
+          exit 1
+        fi
+
+
   build:
     runs-on: ubuntu-latest
     permissions:
