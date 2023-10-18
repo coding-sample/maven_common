@@ -14,7 +14,7 @@ jobs:
   trigger_maven_common_build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: none
       packages: none
     steps:
     - name: Trigger maven_logic build
@@ -27,30 +27,30 @@ jobs:
             -d '{"event_type": "maven_common_build_success", "client_payload": {"tag": "${{ github.ref_name }}"} }'
 
 
-#   check_master_branch:
-#     runs-on: ubuntu-latest
-#     permissions:
-#       contents: read
-#       packages: none
-#     steps:
-#       # Set Up前にcheckout必要
-#     - uses: actions/checkout@v3
+  check_master_branch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: none
+    steps:
+      # Set Up前にcheckout必要
+    - uses: actions/checkout@v3
 
-#     - name: Set Up
-#       id: setup
-#       uses: ./.github/workflows
+    - name: Set Up
+      id: setup
+      uses: ./.github/workflows
 
-#     - name: Ensure the tag is on the master branch
-#       run: |
-#         TAG_COMMIT=$(git rev-list -n 1 ${{ github.ref }})
-#         echo "Tag commit: ${TAG_COMMIT}"
-#         echo "github.ref: ${{ github.ref }}"
+    - name: Ensure the tag is on the master branch
+      run: |
+        TAG_COMMIT=$(git rev-list -n 1 ${{ github.ref }})
+        echo "Tag commit: ${TAG_COMMIT}"
+        echo "github.ref: ${{ github.ref }}"
         
-#         # Check if the tagged commit is part of the master branch
-#         if ! git branch --contains "$TAG_COMMIT" | grep -q '^* master$'; then
-#           echo "masterブランチ以外のコミットへのタグではビルドされません"
-#           exit 1
-#         fi
+        # Check if the tagged commit is part of the master branch
+        if ! git branch --contains "$TAG_COMMIT" | grep -q '^* master$'; then
+          echo "masterブランチ以外のコミットへのタグではビルドされません"
+          exit 1
+        fi
 
 
 #   build:
