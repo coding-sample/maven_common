@@ -27,6 +27,8 @@ jobs:
     - name: Ensure the tag is on the master branch
       run: |
         TAG_COMMIT=$(git rev-list -n 1 ${{ github.ref }})
+        echo "Tag commit: ${TAG_COMMIT}"
+        echo "github.ref: ${{ github.ref }}"
         
         # Check if the tagged commit is part of the master branch
         if ! git branch --contains "$TAG_COMMIT" | grep -q '^* master$'; then
