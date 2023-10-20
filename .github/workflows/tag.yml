@@ -68,7 +68,9 @@ jobs:
       uses: ./.github/workflows
 
     - name: Build with Maven
-      run: mvn --settings ./settings.xml clean install -Dbuild_time=${{ steps.setup.outputs.build_time_tag }}
+      run: |
+        echo "########### build_time=${{ steps.setup.outputs.build_time_tag }}"
+        mvn --settings ./settings.xml clean install -Dbuild_time=${{ steps.setup.outputs.build_time_tag }}
 
     - name: Upload src
       uses: actions/upload-artifact@v3
