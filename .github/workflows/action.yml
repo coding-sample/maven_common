@@ -43,7 +43,9 @@ runs:
       else
           suffix="-SNAPSHOT"
       fi
-      echo "build_time_tag=${basename GITHUB_REF}${suffix}" | sed "s/\//-/g" >> $GITHUB_OUTPUT
+      # echo "build_time_tag=${basename GITHUB_REF}${suffix}" | sed "s/\//-/g" >> $GITHUB_OUTPUT
+      echo "build_time_tag=$(basename $GITHUB_REF)${suffix}" | sed "s/\//-/g" >> $GITHUB_OUTPUT
+
     shell: bash
 
   - name: Set pkg
