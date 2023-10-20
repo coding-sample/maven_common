@@ -11,20 +11,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  trigger_maven_common_build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: none
-      packages: none
-    steps:
-    - name: Trigger maven_logic build
-      if: success()  # Only run this step if the build was successful
-      run: |
-        curl -X POST \
-            -H "Authorization: token ${{ secrets.PKG_READ_ETERNAL }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/coding-sample/maven_logic/dispatches \
-            -d '{"event_type": "maven_common_build_success", "client_payload": {"tag": "${{ github.ref_name }}"} }'
 
 
   # check_master_branch:
@@ -53,47 +39,63 @@ jobs:
   #       fi
 
 
-#   build:
-#     needs: check_master_branch
-#     runs-on: ubuntu-latest
-#     permissions:
-#       contents: read
-#       packages: none
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: none
 
-#     steps:
-#     - name: Token確認
-#       env:
-#         TOKEN: ${{ secrets.APP_ID }}
-#       run: |
-#         echo "app_id1: ${TOKEN}"
-#         echo "app_id2: ${4:TOKEN}"
-#         echo "app_id2: ${TOKEN:0:4}"
-#         echo "app_id2: ${#TOKEN}"
+    steps:
+    - name: Token確認
+      env:
+        TOKEN: ${{ secrets.APP_ID }}
+      run: |
+        echo "app_id1: ${TOKEN}"
+        echo "app_id2: ${4:TOKEN}"
+        echo "app_id2: ${TOKEN:0:4}"
+        echo "app_id2: ${#TOKEN}"
 
-#     - name: Token確認2
-#       env:
-#         TOKEN: ${{ secrets.PRIVATE_KEY }}
-#       run: |
-#         echo "app_id1: ${TOKEN}"
-#         echo "app_id2: ${TOKEN:4}"
-#         echo "app_id2: ${TOKEN:0:4}"
-#         echo "app_id2: ${#TOKEN}"
+    - name: Token確認2
+      env:
+        TOKEN: ${{ secrets.PRIVATE_KEY }}
+      run: |
+        echo "app_id1: ${TOKEN}"
+        echo "app_id2: ${TOKEN:4}"
+        echo "app_id2: ${TOKEN:0:4}"
+        echo "app_id2: ${#TOKEN}"
 
-#       # Set Up前にcheckout必要
-#     - uses: actions/checkout@v3
+      # Set Up前にcheckout必要
+    - uses: actions/checkout@v3
 
-#     - name: Set Up
-#       id: setup
-#       uses: ./.github/workflows
+    - name: Set Up
+      id: setup
+      uses: ./.github/workflows
 
-#     - name: Build with Maven
-#       run: mvn --settings ./settings.xml clean install -Dbuild_time=${{ steps.setup.outputs.build_time }}
+    - name: Build with Maven
+      run: mvn --settings ./settings.xml clean install -Dbuild_time=${{ steps.setup.outputs.build_time_tag }}
 
-#     - name: Upload src
-#       uses: actions/upload-artifact@v3
-#       with:
-#         name: src
-#         path: .
+    - name: Upload src
+      uses: actions/upload-artifact@v3
+      with:
+        name: src
+        path: .
+
+
+  trigger_maven_common_build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: none
+      packages: none
+    steps:
+    - name: Trigger maven_logic build
+      if: success()  # Only run this step if the build was successful
+      run: |
+        curl -X POST \
+            -H "Authorization: token ${{ secrets.PKG_READ_ETERNAL }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/coding-sample/maven_logic/dispatches \
+            -d '{"event_type": "maven_common_build_success", "client_payload": {"tag": "${{ github.ref_name }}"} }'
+
 
 #   test:
 #     needs: build
@@ -111,7 +113,7 @@ jobs:
 #       uses: ./.github/workflows
 
 #     - name: Test
-#       run: mvn --settings ./settings.xml test -Dbuild_time=${{ steps.setup.outputs.build_time }}
+#       run: mvn --settings ./settings.xml test -Dbuild_time=${{ steps.setup.outputs.build_time_tag }}
 
 # # ...（既存の部分は省略）
 
@@ -228,9 +230,9 @@ jobs:
 #         echo "----------"
 
 #         if [[ "${res}" != *"message"* ]]; then
-#           id=$(echo "${res}" | jq '.[] | select(.name == "${{ steps.setup.outputs.build_time }}") | .id')
+#           id=$(echo "${res}" | jq '.[] | select(.name == "${{ steps.setup.outputs.build_time_tag }}") | .id')
 #           if [ -n "$id" ]; then
-#             echo "ID of package with name '${{ steps.setup.outputs.build_time }}' is: ${id}"
+#             echo "ID of package with name '${{ steps.setup.outputs.build_time_tag }}' is: ${id}"
 #             echo "id=${id}" >> $GITHUB_OUTPUT
 #           else
 #             echo "Package not found, skipping deletion."
@@ -267,7 +269,7 @@ jobs:
 #       uses: ./.github/workflows
 
 #     - name: Deploy to GitHub Packages
-#       run: mvn --settings ./settings.xml deploy -Dbuild_time=${{ steps.setup.outputs.build_time }}
+#       run: mvn --settings ./settings.xml deploy -Dbuild_time=${{ steps.setup.outputs.build_time_tag }}
 #       env:
 #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
