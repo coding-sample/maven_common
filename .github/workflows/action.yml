@@ -13,7 +13,7 @@ outputs:
     value: ${{ steps.set-vers.outputs.build_time }}
   build_time_tag:
     description: 'The build number of tag'
-    value: ${{ steps.set-vers.outputs.build_time_tag }}
+    value: ${{ steps.set-vers-tag.outputs.build_time_tag }}
   pkg:
     description: 'package name'
     value: ${{ steps.set-pkg.outputs.pkg }}
