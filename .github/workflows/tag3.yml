@@ -14,30 +14,30 @@ on:
         required: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: none
+  # build:
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #     packages: none
 
-    steps:
-      # Checkout is necessary before Set Up
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.tag_name }}  # Use the tag from the input
+  #   steps:
+  #     # Checkout is necessary before Set Up
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         ref: ${{ github.event.inputs.tag_name }}  # Use the tag from the input
 
-      - name: Set Up
-        id: setup
-        uses: ./.github/workflows
+  #     - name: Set Up
+  #       id: setup
+  #       uses: ./.github/workflows
 
-      # PAT is necessary for referencing packages from other repositories
-      - name: Build with Maven
-        run: mvn --settings ./settings.xml clean install -Dbuild_time=${{ steps.setup.outputs.build_time }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.PKG_READ_ETERNAL }}
+  #     # PAT is necessary for referencing packages from other repositories
+  #     - name: Build with Maven
+  #       run: mvn --settings ./settings.xml clean install -Dbuild_time=${{ steps.setup.outputs.build_time }}
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.PKG_READ_ETERNAL }}
 
   trigger_next_build:
-    needs: build
+    # needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: none
@@ -53,7 +53,7 @@ jobs:
           NEXT_REPO_NAME=""
           FOUND_CURRENT=false
 
-          
+
           echo "Chain is ${CHAIN_ARRAY[@]}"
 
           for REPO in "${CHAIN_ARRAY[@]}"; do
