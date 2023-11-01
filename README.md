@@ -33,5 +33,7 @@ https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
 PKG_READ_ETERNAL
 
 # tag追加
+git push --delete origin hoge10
+git tag -d hoge10
 git tag hoge10
 git push origin hoge10
