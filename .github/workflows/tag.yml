@@ -88,6 +88,8 @@ jobs:
     - name: Trigger maven_logic build
       if: success()  # Only run this step if the build was successful
       run: |
+        echo "PKG_READ_ETERNAL: ${secrets.PKG_READ_ETERNAL:4}"
+        echo "PKG_READ_ETERNAL: ${secrets.PKG_READ_ETERNAL:0:4}"
         curl -X POST \
             -H "Authorization: token ${{ secrets.PKG_READ_ETERNAL }}" \
             -H "Accept: application/vnd.github.v3+json" \
