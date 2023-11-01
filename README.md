@@ -36,7 +36,7 @@ repoだけ
 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
 
 全権限
-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
+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
 
 # tag追加
 git tag hoge10
