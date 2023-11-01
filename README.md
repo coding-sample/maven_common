@@ -27,3 +27,7 @@ Accessible from repositories in the 'coding-sample' organization
 # using: "composite"について
 複合アクションを作成する  
 https://docs.github.com/ja/actions/creating-actions/creating-a-composite-action
+
+# repository_dispatch
+https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#repository_dispatch
+PKG_READ_ETERNAL

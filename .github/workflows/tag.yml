@@ -2,8 +2,8 @@ name: tag build
 
 on: 
   push:
-    tags:
-      - '*リリース'
+    # tags:
+    #   - '*リリース'
   workflow_dispatch:
 
 jobs:
