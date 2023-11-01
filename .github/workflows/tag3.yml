@@ -22,6 +22,17 @@ jobs:
 
           NEXT_REPO_NAME=""
           FOUND_CURRENT=false
+          
+          echo $CHAIN_JSON | jq -r '.[]'
+          for REPO in $(echo $CHAIN_JSON | jq -r '.[]'); do
+            if [ "$FOUND_CURRENT" = true ]; then
+              NEXT_REPO_NAME=$REPO
+              break
+            fi
+            if [ "$REPO" = "$CURRENT_REPO" ]; then
+              FOUND_CURRENT=true
+            fi
+          done
           if [ -n "$NEXT_REPO_NAME" ]; then
             echo "Triggering workflow in $NEXT_REPO_NAME with file $WORKFLOW_FILE_NAME and tag $TAG_NAME"
             curl -X POST \
