@@ -25,7 +25,7 @@ jobs:
 
           echo "Chain is ${CHAIN_JSON[@]}"
 
-          for REPO in $(echo $CHAIN_JSON | jq -r '.[]'); do
+          for REPO in ${CHAIN_JSON[@]}; do
             if [ "$FOUND_CURRENT" = true ]; then
               NEXT_REPO_NAME=$REPO
               break
