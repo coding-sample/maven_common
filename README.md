@@ -37,3 +37,5 @@ git push --delete origin hoge10
 git tag -d hoge10
 git tag hoge10
 git push origin hoge10
+
+https://docs.github.com/ja/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
