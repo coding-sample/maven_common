@@ -53,6 +53,7 @@ jobs:
           NEXT_REPO_NAME=""
           FOUND_CURRENT=false
 
+          
           echo "Chain is ${CHAIN_ARRAY[@]}"
 
           for REPO in "${CHAIN_ARRAY[@]}"; do
