@@ -36,9 +36,10 @@ jobs:
           done
           if [ -n "$NEXT_REPO_NAME" ]; then
             echo "Triggering workflow in $NEXT_REPO_NAME with file $WORKFLOW_FILE_NAME and tag $TAG_NAME"
+            CHAIN_STRING=$(echo "${CHAIN_JSON[@]}" | jq -R -s -c 'split(" ")')
             curl -X POST \
                 -H "Authorization: token ${{ secrets.PKG_READ_ETERNAL }}" \
                 -H "Accept: application/vnd.github.v3+json" \
                 https://api.github.com/repos/coding-sample/$NEXT_REPO_NAME/actions/workflows/$WORKFLOW_FILE_NAME/dispatches \
-                -d '{"event_type": "trigger_chain", "client_payload": {"chain": '${CHAIN_JSON[@]}', "workflow_file_name": "'$WORKFLOW_FILE_NAME'", "tag_name": "'$TAG_NAME'"}}'
+                -d '{"event_type": "trigger_chain", "client_payload": {"chain": '$CHAIN_STRING', "workflow_file_name": "'$WORKFLOW_FILE_NAME'", "tag_name": "'$TAG_NAME'"}}'
           fi
