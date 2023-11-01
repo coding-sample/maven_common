@@ -22,3 +22,12 @@ jobs:
 
           NEXT_REPO_NAME=""
           FOUND_CURRENT=false
+          for REPO in $(echo $CHAIN_JSON | jq -r '.[]'); do
+            if [ "$FOUND_CURRENT" = true ]; then
+              NEXT_REPO_NAME=$REPO
+              break
+            fi
+            if [ "$REPO" = "$CURRENT_REPO" ]; then
+              FOUND_CURRENT=true
+            fi
+          done
