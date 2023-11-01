@@ -23,7 +23,8 @@ jobs:
           NEXT_REPO_NAME=""
           FOUND_CURRENT=false
 
-          echo "Chain is $CHAIN_JSON"
+          echo "Chain is ${CHAIN_JSON[@]}"
+
           for REPO in $(echo $CHAIN_JSON | jq -r '.[]'); do
             if [ "$FOUND_CURRENT" = true ]; then
               NEXT_REPO_NAME=$REPO
