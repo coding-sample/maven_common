@@ -67,7 +67,7 @@ jobs:
           done
           if [ -n "$NEXT_REPO_NAME" ]; then
             echo "Triggering workflow in $NEXT_REPO_NAME with file $WORKFLOW_FILE_NAME and tag $TAG_NAME"
-            echo https://api.github.com/repos/coding-sample/$NEXT_REPO_NAME/actions/workflows/$WORKFLOW_FILE_NAME/dispatches \
+            echo https://api.github.com/repos/coding-sample/$NEXT_REPO_NAME/actions/workflows/$WORKFLOW_FILE_NAME/dispatches
             echo "'${CHAIN_ARRAY[*]}'"
             curl -X POST \
                 -H "Authorization: token ${{ secrets.PKG_READ_ETERNAL }}" \
