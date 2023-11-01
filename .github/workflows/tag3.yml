@@ -1,32 +1,38 @@
-name: tag build
+name: release build for tag
 
-on:
-  workflow_dispatch:
-    inputs:
-      repo_name:
-        description: 'The name of the repository to trigger'
-        required: true
-      workflow_file_name:
-        description: 'The name of the workflow file to trigger'
-        required: true
-      tag_name:
-        description: 'The name of the tag to use for triggering the workflow'
-        required: true
+on: 
+  repository_dispatch:
+    types: [trigger_chain]
 
 jobs:
-  trigger_next_repo_build:
+  trigger_next_build:
     runs-on: ubuntu-latest
     permissions:
       contents: none
       packages: none
     steps:
-      - name: Trigger next repository build
+      - name: Trigger next repo build
         run: |
-          REPO_NAME="${{ github.event.inputs.repo_name }}"
-          WORKFLOW_FILE_NAME="${{ github.event.inputs.workflow_file_name }}"
-          TAG_NAME="${{ github.event.inputs.tag_name }}"
-          curl -X POST \
-              -H "Authorization: token ${{ secrets.PKG_READ_ETERNAL }}" \
-              -H "Accept: application/vnd.github.v3+json" \
-              https://api.github.com/repos/coding-sample/${REPO_NAME}/actions/workflows/${WORKFLOW_FILE_NAME}/dispatches \
-              -d '{"ref": "'${TAG_NAME}'"}'  # Specify the tag name for the ref parameter
+          CHAIN_JSON=${{ toJson(github.event.client_payload.chain) }}
+          WORKFLOW_FILE_NAME=${{ github.event.client_payload.workflow_file_name }}
+          TAG_NAME=${{ github.event.client_payload.tag_name }}
+          CURRENT_REPO=${{ github.repository }}
+          NEXT_REPO_NAME=""
+          FOUND_CURRENT=false
+          for REPO in $(echo $CHAIN_JSON | jq -r '.[]'); do
+            if [ "$FOUND_CURRENT" = true ]; then
+              NEXT_REPO_NAME=$REPO
+              break
+            fi
+            if [ "$REPO" = "$CURRENT_REPO" ]; then
+              FOUND_CURRENT=true
+            fi
+          done
+          if [ -n "$NEXT_REPO_NAME" ]; then
+            echo "Triggering workflow in $NEXT_REPO_NAME with file $WORKFLOW_FILE_NAME and tag $TAG_NAME"
+            curl -X POST \
+                -H "Authorization: token ${{ secrets.PKG_READ_ETERNAL }}" \
+                -H "Accept: application/vnd.github.v3+json" \
+                https://api.github.com/repos/coding-sample/$NEXT_REPO_NAME/actions/workflows/$WORKFLOW_FILE_NAME/dispatches \
+                -d '{"event_type": "trigger_chain", "client_payload": {"chain": "'$(echo $CHAIN_JSON | jq -r '.[1:] | @csv')'", "workflow_file_name": "'$WORKFLOW_FILE_NAME'", "tag_name": "'$TAG_NAME'"}}'
+          fi

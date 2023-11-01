@@ -35,6 +35,9 @@ PKG_READ_ETERNAL
 repoだけ
 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
 
+全権限
+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
+
 # tag追加
 git tag hoge10
 git push origin hoge10
