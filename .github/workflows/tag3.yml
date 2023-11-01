@@ -14,6 +14,7 @@ jobs:
       - name: Trigger next repo build
         run: |
           set -x  # Enable tracing
+          echo ${{ github.event.client_payload.chain }}
           CHAIN_JSON=${{ toJson(github.event.client_payload.chain) }}
           WORKFLOW_FILE_NAME=${{ github.event.client_payload.workflow_file_name }}
           TAG_NAME=${{ github.event.client_payload.tag_name }}
