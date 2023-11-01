@@ -11,26 +11,26 @@ on:
         required: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: none
+  # build:
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #     packages: none
 
-    steps:
-      - uses: actions/checkout@v3
+  #   steps:
+  #     - uses: actions/checkout@v3
 
-      - name: Set Up
-        id: setup
-        uses: ./.github/workflows
+  #     - name: Set Up
+  #       id: setup
+  #       uses: ./.github/workflows
 
-      - name: Build with Maven
-        run: |
-          echo "########### build_time=${{ steps.setup.outputs.build_time_tag }}"
-          mvn --settings ./settings.xml clean install -Dbuild_time=${{ steps.setup.outputs.build_time_tag }}
+  #     - name: Build with Maven
+  #       run: |
+  #         echo "########### build_time=${{ steps.setup.outputs.build_time_tag }}"
+  #         mvn --settings ./settings.xml clean install -Dbuild_time=${{ steps.setup.outputs.build_time_tag }}
 
   trigger_next_build:
-    needs: build
+    # needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: none
