@@ -27,3 +27,15 @@ Accessible from repositories in the 'coding-sample' organization
 # using: "composite"について
 複合アクションを作成する  
 https://docs.github.com/ja/actions/creating-actions/creating-a-composite-action
+
+# repository_dispatch
+https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#repository_dispatch
+PKG_READ_ETERNAL
+
+# tag追加
+git push --delete origin hoge10
+git tag -d hoge10
+git tag hoge10
+git push origin hoge10
+
+https://docs.github.com/ja/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event

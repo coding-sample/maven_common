@@ -6,6 +6,8 @@ on:
       - master
     paths-ignore:
       - '.github/workflows/release.yml'
+      - '.github/workflows/tag.yml'
+      - '.github/workflows/build_chain.yml'
 
 jobs:
   build:

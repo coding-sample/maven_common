@@ -11,6 +11,9 @@ outputs:
   build_time:
     description: 'The build number'
     value: ${{ steps.set-vers.outputs.build_time }}
+  build_time_tag:
+    description: 'The build number of tag'
+    value: ${{ steps.set-vers-tag.outputs.build_time_tag }}
   pkg:
     description: 'package name'
     value: ${{ steps.set-pkg.outputs.pkg }}
@@ -28,7 +31,21 @@ runs:
           suffix="-SNAPSHOT"
       fi
       echo "build_time=$(date +%Y%m)-${GITHUB_REF#refs/heads/}${suffix}" | sed "s/\//-/g" >> $GITHUB_OUTPUT
-      # echo "build_time=hoge5${suffix}" | sed "s/\//-/g" >> $GITHUB_OUTPUT
+    shell: bash
+
+  - name: Set build time of tag
+    id: set-vers-tag
+    run: |
+      echo "branch name=${GITHUB_REF}"
+      if [ "${{ inputs.release_build }}" = "true" ]; then
+          suffix=""
+      else
+          suffix="-SNAPSHOT"
+      fi
+      # echo "build_time_tag=${basename GITHUB_REF}${suffix}" | sed "s/\//-/g" >> $GITHUB_OUTPUT
+      echo "build_time_tag=$(basename $GITHUB_REF)${suffix}" | sed "s/\//-/g" >> $GITHUB_OUTPUT
+      echo "*********build_time_tag=${build_time_tag}"
+
     shell: bash
 
   - name: Set pkg
