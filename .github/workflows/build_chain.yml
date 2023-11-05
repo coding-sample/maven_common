@@ -1,4 +1,4 @@
-name: release build for tag
+name: chain build for tag
 
 on:
   workflow_dispatch:
@@ -8,9 +8,6 @@ on:
         required: true
       workflow_file_name:
         description: 'The name of the workflow file to trigger'
-        required: true
-      tag_name:
-        description: 'The name of the tag to use for triggering the workflow'
         required: true
 
 jobs:
@@ -57,5 +54,5 @@ jobs:
               -H "Authorization: token ${{ secrets.PKG_READ_ETERNAL }}" \
               -H "Accept: application/vnd.github.v3+json" \
               https://api.github.com/repos/coding-sample/$NEXT_REPO_NAME/actions/workflows/$WORKFLOW_FILE_NAME/dispatches \
-              -d '{"ref": "'$TAG_NAME'", "inputs": {"chain": "${{ github.event.inputs.chain }}", "workflow_file_name": "'$WORKFLOW_FILE_NAME'", "tag_name": "'$TAG_NAME'"}}'
+              -d '{"ref": "'$TAG_NAME'", "inputs": {"chain": "${{ github.event.inputs.chain }}", "workflow_file_name": "'$WORKFLOW_FILE_NAME'"}}'
         fi
