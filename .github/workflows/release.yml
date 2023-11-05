@@ -7,6 +7,7 @@ on:
     paths-ignore:
       - '.github/workflows/build.yml'
       - '.github/workflows/tag.yml'
+      - '.github/workflows/build_chain.yml'
   workflow_dispatch:
 
 jobs:
