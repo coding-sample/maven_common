@@ -5,7 +5,7 @@ on:
     inputs:
       chain:
         description: 'Comma separated list of repositories in build chain'
-        required: true
+        required: false
       workflow_file_name:
         description: 'The name of the workflow file to trigger'
         required: true
