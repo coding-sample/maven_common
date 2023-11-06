@@ -15,9 +15,6 @@ jobs:
           echo "tag_name: ${{ github.event.client_payload.tag_name }}"
           echo "client_payload: ${{ github.event.client_payload }}"
 
-      - name: Checkout the repo
-        uses: actions/checkout@v3
-
       - name: Checkout the repo for the branch
         uses: actions/checkout@v3
         with:
@@ -31,7 +28,12 @@ jobs:
       - name: Tag the branch
         run: |
           TAG_NAME=${{ github.event.client_payload.tag_name }}
+          echo "# 10"
           git tag -d $TAG_NAME 2>/dev/null || true
+          echo "# 20"
           git push origin --delete $TAG_NAME 2>/dev/null || true
+          echo "# 30"
           git tag $TAG_NAME
+          echo "# 40"
           git push origin $TAG_NAME
+          echo "# 50"
