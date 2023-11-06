@@ -7,6 +7,7 @@ on:
 jobs:
   tag:
     runs-on: ubuntu-latest
+    permissions: write-all
     if: github.event.action == 'tag-branch-event'
     steps:
       - name: View parameters
