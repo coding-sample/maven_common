@@ -9,11 +9,14 @@ on:
       workflow_file_name:
         description: 'The name of the workflow file to trigger'
         required: true
+      chain_identifier:
+        description: 'Identifier to control job execution. Use "build" to trigger chain builds, "tag" for tagging repository.'
+        required: true
 
 jobs:
   trigger_next_build:
-    # needs: build
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.chain_identifier == 'build' }}
     permissions:
       contents: none
       packages: none
@@ -50,3 +53,15 @@ jobs:
               https://api.github.com/repos/coding-sample/$NEXT_REPO_NAME/actions/workflows/$WORKFLOW_FILE_NAME/dispatches \
               -d "{\"ref\": \"$TAG_NAME\", \"inputs\": {\"chain\": \"$REPO_LIST\", \"workflow_file_name\": \"$WORKFLOW_FILE_NAME\"}}"
         fi
+
+  tag_repository:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.chain_identifier == 'tag' }}
+    permissions:
+      contents: write
+      packages: none
+    steps:
+      - name: Tag the repository
+        run: |
+          # ここにリポジトリのタグ設定を行うスクリプトを追加します。
+          # タグを作成してプッシュするコマンド、またはGitHub APIを使用するなど。
