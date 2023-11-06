@@ -9,6 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.action == 'tag-branch-event'
     steps:
+      - name: View parameters
+        run: |
+          echo "Branch: ${{ github.event.client_payload.branch }}"
+          echo "tag_name: ${{ github.event.client_payload.tag_name }}"
+
       - name: Checkout the repo
         uses: actions/checkout@v3
         with:
