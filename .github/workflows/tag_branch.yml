@@ -13,6 +13,7 @@ jobs:
         run: |
           echo "Branch: ${{ github.event.client_payload.branch }}"
           echo "tag_name: ${{ github.event.client_payload.tag_name }}"
+          echo "Branch: ${{ github.event.client_payload }}"
 
       - name: Checkout the repo
         uses: actions/checkout@v3
