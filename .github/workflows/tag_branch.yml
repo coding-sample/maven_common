@@ -1,4 +1,4 @@
-name: Tag a Specific Branch
+name: Conditional Jobs on Repository Dispatch
 
 on:
   repository_dispatch:
@@ -7,6 +7,7 @@ on:
 jobs:
   tag:
     runs-on: ubuntu-latest
+    if: github.event.action == 'tag-branch-event'
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v3
@@ -15,7 +16,7 @@ jobs:
 
       - name: Set up Git
         run: |
-          git config --local user.email "action@github.com"
+          # git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
       - name: Tag the branch
