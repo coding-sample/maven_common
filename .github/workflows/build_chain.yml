@@ -24,6 +24,8 @@ jobs:
     - name: Trigger next repo build
       if: success()  # Only run this step if the build was successful
       run: |
+        sleep 20
+
         IFS=',' read -r -a CHAIN_ARRAY <<< "${{ github.event.inputs.chain }}"
         WORKFLOW_FILE_NAME=${{ github.event.inputs.workflow_file_name }}
         TAG_NAME=${GITHUB_REF#refs/tags/}
