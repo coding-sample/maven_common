@@ -57,9 +57,7 @@ jobs:
   tag_repository:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.chain_identifier == 'tag' }}
-    permissions:
-      contents: write
-      packages: none
+    permissions: write-all
     steps:
       # - name: Tag the repository
       #   run: |
