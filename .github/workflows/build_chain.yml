@@ -64,6 +64,5 @@ jobs:
       - name: Tag the repository
         run: |
           sleep 20
-          exit 1
           # ここにリポジトリのタグ設定を行うスクリプトを追加します。
           # タグを作成してプッシュするコマンド、またはGitHub APIを使用するなど。
