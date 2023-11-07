@@ -72,6 +72,7 @@ jobs:
       - name: Create and Push Tag
         run: |
           TAG_NAME=${GITHUB_REF#refs/tags/}
+          echo "Tagging repository with $TAG_NAME"
           git config --local user.name "GitHub Action"
           
           git tag -d "$TAG_NAME" 2>/dev/null || true
