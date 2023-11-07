@@ -61,8 +61,22 @@ jobs:
       contents: write
       packages: none
     steps:
-      - name: Tag the repository
+      # - name: Tag the repository
+      #   run: |
+      #     sleep 20
+      #     # ここにリポジトリのタグ設定を行うスクリプトを追加します。
+      #     # タグを作成してプッシュするコマンド、またはGitHub APIを使用するなど。
+
+
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Create and Push Tag
         run: |
-          sleep 20
-          # ここにリポジトリのタグ設定を行うスクリプトを追加します。
-          # タグを作成してプッシュするコマンド、またはGitHub APIを使用するなど。
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          git config --local user.name "GitHub Action"
+          
+          git tag "$TAG_NAME"
+          git push origin "$TAG_NAME"
+          git tag -d "$TAG_NAME" 2>/dev/null || true
+          git push --delete origin "$TAG_NAME" 2>/dev/null || true
