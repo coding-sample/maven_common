@@ -62,13 +62,6 @@ jobs:
     if: ${{ github.event.inputs.chain_identifier == 'tag' }}
     permissions: write-all
     steps:
-      # - name: Tag the repository
-      #   run: |
-      #     sleep 20
-      #     # ここにリポジトリのタグ設定を行うスクリプトを追加します。
-      #     # タグを作成してプッシュするコマンド、またはGitHub APIを使用するなど。
-
-
       - name: Checkout the repository
         uses: actions/checkout@v3
 
@@ -78,12 +71,7 @@ jobs:
           echo "Tagging repository with $TAG_NAME"
           git config --local user.name "GitHub Action"
           
-          echo "# 1"
           git tag -d "$TAG_NAME" 2>/dev/null || true
-          echo "# 2"
           git push --delete origin "$TAG_NAME" 2>/dev/null || true
-          echo "# 3"
           git tag "$TAG_NAME"
-          echo "# 4"
           git push origin "$TAG_NAME"
-          echo "# 5"
