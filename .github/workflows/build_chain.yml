@@ -75,7 +75,12 @@ jobs:
           echo "Tagging repository with $TAG_NAME"
           git config --local user.name "GitHub Action"
           
+          echo "# 1"
           git tag -d "$TAG_NAME" 2>/dev/null || true
+          echo "# 2"
           git push --delete origin "$TAG_NAME" 2>/dev/null || true
+          echo "# 3"
           git tag "$TAG_NAME"
+          echo "# 4"
           git push origin "$TAG_NAME"
+          echo "# 5"
