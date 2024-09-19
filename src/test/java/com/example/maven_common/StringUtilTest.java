@@ -4,12 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import com.example.maven_common.Comm;
-
-public class CommTest {
+public class StringUtilTest {
     @Test
     public void test() {
-        Comm comm = new Comm();
-        assertEquals("Comm", comm.getComm());
+        StringUtil comm = new StringUtil();
+        assertEquals("Comm", comm.getRepo());
     }
 }
