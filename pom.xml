@@ -12,7 +12,7 @@
 
 	<groupId>com.example</groupId>
 	<artifactId>maven_common</artifactId>
-	<version>${build_time}</version>
+	<version>1.0.0</version>
 
 	<name>maven_common</name>
 	<description>Demo project for Spring Boot</description>
@@ -45,10 +45,4 @@
 			<url>https://maven.pkg.github.com/coding-sample/maven_common/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
-
-	<build>
-		<plugins>
-			<!-- spring-boot-maven-pluginを削除 -->
-		</plugins>
-	</build>
 </project>
